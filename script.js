@@ -31,6 +31,7 @@ window.addEventListener("load", function() {
       let pilotStatusUpdate = document.getElementById("pilotStatus");
       let copilotStatusUpdate = document.getElementById("copilotStatus");
       let launchStatusUpdate = document.getElementById("launchStatus");
+      let readyForEvaluatedLaunch = true;
       
 
 
@@ -46,32 +47,57 @@ window.addEventListener("load", function() {
             </ol>
          <img src="${}">
       */
+     
 
-   if (!isNaN(pilotNameInput.value)) {
+   if (!isNaN(pilotNameInput.value) && pilotNameInput.value !== ("")) {
+         faultyItemsVisibility.style.visibility = "hidden";
+         launchStatusUpdate.innerHTML = "Awaiting Information Before Launch";
+         launchStatusUpdate.style.color = "black";
          alert("Please enter only letters in the Pilot Name field");
+         readyForEvaluatedLaunch = false;
          event.preventDefault(); 
          }
-   if (!isNaN(copilotNameInput.value)) {
+   if (!isNaN(copilotNameInput.value) && copilotNameInput.value !== ("")) {
+         faultyItemsVisibility.style.visibility = "hidden";
+         launchStatusUpdate.innerHTML = "Awaiting Information Before Launch";
+         launchStatusUpdate.style.color = "black";
          alert("Please enter only letters in the Co Pilot Name field");
+         readyForEvaluatedLaunch = false;
          event.preventDefault(); 
          }
  
     if (isNaN(fuelLevelInput.value)) {
+         faultyItemsVisibility.style.visibility = "hidden";
+         launchStatusUpdate.innerHTML = "Awaiting Information Before Launch";
+         launchStatusUpdate.style.color = "black";
          alert("Please enter only numbers in the Fuel Level field");
+         readyForEvaluatedLaunch = false;
          event.preventDefault(); 
          }
 
     if (isNaN(cargoMassInput.value)) {
+         faultyItemsVisibility.style.visibility = "hidden";
+         launchStatusUpdate.innerHTML = "Awaiting Information Before Launch";
+         launchStatusUpdate.style.color = "black";
          alert("Please enter only numbers in the Cargo Mass field");
+         readyForEvaluatedLaunch = false;
           event.preventDefault(); 
          }
 
       if (pilotNameInput.value === "" || copilotNameInput.value === "" || fuelLevelInput.value === "" || cargoMassInput.value === "") {
          window.alert("All fields are required");
+         faultyItemsVisibility.style.visibility = "hidden";
+         launchStatusUpdate.innerHTML = "Awaiting Information Before Launch";
+         launchStatusUpdate.style.color = "black";
+         readyForEvaluatedLaunch = false;
          event.preventDefault();
       }
 
-      if (fuelLevelInput.value < 10000) {
+      if (fuelLevelInput.value >= 10000 && cargoMassInput.value <= 10000 && isNaN(pilotNameInput.value) && isNaN(copilotNameInput.value)) {
+         readyForEvaluatedLaunch = true;
+         event.preventDefault();
+      }
+      if (fuelLevelInput.value < 10000 && readyForEvaluatedLaunch === true && !isNaN(fuelLevelInput.value)) {
          faultyItemsVisibility.style.visibility = "visible";
          launchStatusUpdate.style.color = "red";
          launchStatusUpdate.innerHTML = "Shuttle not ready for launch";
@@ -81,7 +107,7 @@ window.addEventListener("load", function() {
          event.preventDefault();
       }
 
-      if (cargoMassInput.value > 10000) {
+      if (cargoMassInput.value > 10000 && readyForEvaluatedLaunch === true && !isNaN(cargoMassInput.value)) {
          faultyItemsVisibility.style.visibility = "visible";
          launchStatusUpdate.style.color = "red";
          launchStatusUpdate.innerHTML = "Shuttle not ready for launch";
@@ -91,7 +117,7 @@ window.addEventListener("load", function() {
          event.preventDefault();
       }
 
-      if ((fuelLevelInput.value >= 10000) && (cargoMassInput.value <= 10000)) {
+      if ((fuelLevelInput.value >= 10000) && (cargoMassInput.value <= 10000) && readyForEvaluatedLaunch === true) {
          launchStatusUpdate.style.color = "green";
          faultyItemsVisibility.style.visibility = "hidden";
          launchStatusUpdate.innerHTML = "Shuttle is ready for launch";
